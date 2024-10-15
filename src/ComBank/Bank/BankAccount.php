@@ -32,65 +32,30 @@ class BankAccount{
         $this->overdraft = $overdraft;
     }
 
-    // Methods
-    /**
-     * Get the value of balance
-     */ 
-    public function getBalance()
-    {
+    // BankAccountInterface
+    public function transaction(BankTransactionInterface $bankTransactionInterface) : void {
+
+    }
+    public function openAccount() : bool {
+        return false;
+    }
+    public function reopenAccount() : void {
+
+    }
+    public function closeAccount() : void {
+
+    }
+    public function getBalance() : float {
         return $this->balance;
     }
-
-    /**
-     * Set the value of balance
-     *
-     * @return  self
-     */ 
-    public function setBalance($balance)
-    {
-        $this->balance = $balance;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of status
-     */ 
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set the value of status
-     *
-     * @return  self
-     */ 
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of overdraft
-     */ 
-    public function getOverdraft()
-    {
+    public function getOverdraft() : OverdraftInterface {
         return $this->overdraft;
     }
+    public function applyOverdraft(OverdraftInterface $overdraftInterface) : void {
 
-    /**
-     * Set the value of overdraft
-     *
-     * @return  self
-     */ 
-    public function setOverdraft($overdraft)
-    {
-        $this->overdraft = $overdraft;
-
-        return $this;
+    }
+    public function setBalance(float $balance) : void {
+        
     }
 }
 

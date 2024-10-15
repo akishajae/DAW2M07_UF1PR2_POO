@@ -12,7 +12,5 @@ use ComBank\Transactions\Contracts\BankTransactionInterface;
 
 class DepositTransaction 
 {
-
-
    
 }

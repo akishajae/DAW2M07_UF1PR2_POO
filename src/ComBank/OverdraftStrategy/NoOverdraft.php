@@ -1,4 +1,6 @@
-<?php namespace ComBank\OverdraftStrategy;
+<?php
+
+namespace ComBank\OverdraftStrategy;
 
 /**
  * Created by VS Code.
@@ -7,8 +9,15 @@
  * Time: 12:27 PM
  */
 
-class NoOverdraft 
+class NoOverdraft
 {
 
-   
+    // OverdraftInterface
+    public function isGrantOverdraftFunds(float $amount) : bool {
+        return $amount > 0;
+    }
+    public function getOverdraftFundsAmmount() : float {
+        return $this->getOverdraftFundsAmmount();
+    }
+    
 }
