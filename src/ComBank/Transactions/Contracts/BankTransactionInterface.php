@@ -7,12 +7,15 @@
  * Time: 7:29 PM
  */
 
-use ComBank\Bank\Contracts\BackAccountInterface;
+use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 
 interface BankTransactionInterface
 {
     
-    public function applyTransaction(BackAccountInterface $account) : float;
+    public function applyTransaction(BankAccountInterface $bankAccount) : float;
 
+    public function getTransactionInfo() : string;
+
+    public function getAmount() : float;
 }

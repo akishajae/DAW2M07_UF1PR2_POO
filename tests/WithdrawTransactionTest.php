@@ -4,7 +4,7 @@ use ComBank\Bank\BankAccount;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Exceptions\BankAccountException;
-use ComBank\Bank\Contracts\BackAccountInterface;
+use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Transactions\WithdrawTransaction;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\Exceptions\ZeroAmountException;
