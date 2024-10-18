@@ -26,6 +26,6 @@ class DepositTransaction implements BankTransactionInterface
     }
 
     public function getAmount() : float {
-        
+        return 0.0;
     }
 }

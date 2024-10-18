@@ -47,10 +47,10 @@ class BankAccountTest extends TestCase
     {
         $account = new BankAccount(100.0);
         $account->closeAccount();
-        $this->assertFalse($account->openAccount());
+        $this->assertFalse($account->isOpen());
 
         $account->reopenAccount();
-        $this->assertTrue($account->openAccount());
+        $this->assertTrue($account->isOpen());
     }
 
     // Test overdraft application with a mock OverdraftInterface
