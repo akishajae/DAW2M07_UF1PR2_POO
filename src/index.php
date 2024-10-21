@@ -45,10 +45,14 @@ try {
     // withdrawal -25
     pl('Doing transaction withdrawal (-25) with current balance ' . $bankAccount1->getBalance());
 
+    $bankAccount1->transaction(new WithdrawTransaction(25.0));
+
     pl('My new balance after withdrawal (-25) : ' . $bankAccount1->getBalance());
 
     // withdrawal -600
     pl('Doing transaction withdrawal (-600) with current balance ' . $bankAccount1->getBalance());
+
+    $bankAccount1->transaction(new WithdrawTransaction(600.0));
 
 } catch (ZeroAmountException $e) {
     pl($e->getMessage());

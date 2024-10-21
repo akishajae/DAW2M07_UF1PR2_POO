@@ -7,6 +7,7 @@
  * Time: 1:24 PM
  */
 
+use ComBank\Bank\BankAccount;
 use ComBank\Exceptions\InvalidArgsException;
 use ComBank\Exceptions\ZeroAmountException;
 use ComBank\Support\Traits\AmountValidationTrait;
@@ -14,4 +15,7 @@ use ComBank\Support\Traits\AmountValidationTrait;
 abstract class BaseTransaction
 {
     
+    // falta???
+    public $amount;
+
 }

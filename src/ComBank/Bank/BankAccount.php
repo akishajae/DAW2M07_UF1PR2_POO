@@ -39,6 +39,7 @@ class BankAccount implements BankAccountInterface
         $this->validateAmount($newBalance);
         $this->balance = $newBalance;
         $this->status = BankAccountInterface::STATUS_OPEN;
+        // overdraftInterface??
         $this->overdraft = new NoOverdraft();
     }
 
@@ -46,13 +47,8 @@ class BankAccount implements BankAccountInterface
     public function transaction(BankTransactionInterface $bankTransaction): void
     {
         //  exception
-        try {
-            $newBalance = $bankTransaction->applyTransaction($this);
-            $this->setBalance($newBalance);
-        } catch (InvalidOverdraftFundsException $e) {
-            // message???
-            throw new FailedTransactionException($e->getMessage());
-        }
+        $newBalance = $bankTransaction->applyTransaction($this);
+        $this->setBalance($newBalance);
     }
     public function isOpen(): bool
     {
