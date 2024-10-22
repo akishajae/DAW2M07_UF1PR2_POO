@@ -15,12 +15,20 @@ class WithdrawTransaction extends BaseTransaction implements BankTransactionInte
 {
 
    public function __construct(float $amount) {
-
+    // ?????????
    }
 
    public function applyTransaction(BankAccountInterface $bankAccount): float
     {
-        return $bankAccount->getBalance() - $this->amount;
+        $newBalance = $bankAccount->getBalance() - $this->amount;
+
+        // ???????????
+        if ($this->isGrantOverdraftFunds($bankAccount, $newBalance)){
+            throw new InvalidOverdraftFundsException('Your withdraw has reach the...');
+        }
+
+        return $newBalance;
+
     }
 
     public function getTransactionInfo(): string

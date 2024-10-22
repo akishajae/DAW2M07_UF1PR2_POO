@@ -2,6 +2,8 @@
 
 namespace ComBank\OverdraftStrategy;
 
+use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
+
 /**
  * Created by VS Code.
  * User: JPortugal
@@ -9,8 +11,10 @@ namespace ComBank\OverdraftStrategy;
  * Time: 12:27 PM
  */
 
-class NoOverdraft
+class NoOverdraft implements OverdraftInterface
 {
+
+    const OVERDRAFT_FUNDS_AMOUNT = 0.0;
 
     // OverdraftInterface
     public function isGrantOverdraftFunds(float $newAmount) : bool {

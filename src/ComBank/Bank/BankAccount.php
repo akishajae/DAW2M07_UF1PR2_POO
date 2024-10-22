@@ -39,7 +39,6 @@ class BankAccount implements BankAccountInterface
         $this->validateAmount($newBalance);
         $this->balance = $newBalance;
         $this->status = BankAccountInterface::STATUS_OPEN;
-        // overdraftInterface??
         $this->overdraft = new NoOverdraft();
     }
 
