@@ -45,9 +45,15 @@ class BankAccount implements BankAccountInterface
     // BankAccountInterface
     public function transaction(BankTransactionInterface $bankTransaction): void
     {
-        //  exception
-        $newBalance = $bankTransaction->applyTransaction($this);
-        $this->setBalance($newBalance);
+        if (!$this->isOpen()) {
+            throw new BankAccountException('Bank account should be opened.');
+        }
+        try {
+            $newBalance = $bankTransaction->applyTransaction($this);
+            $this->setBalance($newBalance);
+        } catch (InvalidOverdraftFundsException $e) {
+            throw new FailedTransactionException($e->getMessage());
+        }
     }
     public function isOpen(): bool
     {
@@ -58,12 +64,17 @@ class BankAccount implements BankAccountInterface
     }
     public function reopenAccount(): void
     {
-        // exception
+        if ($this->isOpen()) {
+            throw new BankAccountException('Bank account is already opened.');
+        }
+
         $this->status = BankAccountInterface::STATUS_OPEN;
     }
     public function closeAccount(): void
     {
-        // exception
+        if (!$this->isOpen()) {
+            throw new BankAccountException('Bank account is already closed.');
+        }
         $this->status = BankAccountInterface::STATUS_CLOSED;
     }
 

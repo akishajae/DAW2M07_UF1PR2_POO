@@ -2,6 +2,7 @@
 
 namespace ComBank\OverdraftStrategy;
 
+use ComBank\Bank\BankAccount;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 
 /**
@@ -25,3 +26,4 @@ class NoOverdraft implements OverdraftInterface
     }
     
 }
+
