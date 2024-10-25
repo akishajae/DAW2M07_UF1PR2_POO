@@ -24,7 +24,6 @@ class BankAccount implements BankAccountInterface
 {
 
     // Trait
-    // por qué está dentro?????
     use AmountValidationTrait;
 
     // Properties
@@ -35,7 +34,6 @@ class BankAccount implements BankAccountInterface
     // Constructors
     public function __construct(float $newBalance = 0.0)
     {
-        // to do validateAmount
         $this->validateAmount($newBalance);
         $this->balance = $newBalance;
         $this->status = BankAccountInterface::STATUS_OPEN;
@@ -48,12 +46,8 @@ class BankAccount implements BankAccountInterface
         if (!$this->isOpen()) {
             throw new BankAccountException('Bank account should be opened.');
         }
-        try {
-            $newBalance = $bankTransaction->applyTransaction($this);
-            $this->setBalance($newBalance);
-        } catch (InvalidOverdraftFundsException $e) {
-            throw new FailedTransactionException($e->getMessage());
-        }
+
+        $bankTransaction->applyTransaction($this);
     }
     public function isOpen(): bool
     {
@@ -78,7 +72,8 @@ class BankAccount implements BankAccountInterface
         $this->status = BankAccountInterface::STATUS_CLOSED;
     }
 
-    public function getBalance(): float{
+    public function getBalance(): float
+    {
         return $this->balance;
     }
 
@@ -88,6 +83,6 @@ class BankAccount implements BankAccountInterface
     }
     public function applyOverdraft(OverdraftInterface $overdraftInterface): void {}
     public function setBalance(float $newBalance): void {
-
+        $this->balance = $newBalance;
     }
 }

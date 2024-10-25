@@ -10,27 +10,26 @@ namespace ComBank\Transactions;
  */
 
 use ComBank\Bank\Contracts\BankAccountInterface;
-use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 
 class DepositTransaction extends BaseTransaction implements BankTransactionInterface
 {
-
-    use AmountValidationTrait;
     public function applyTransaction(BankAccountInterface $bankAccount): float
     {
-        if (!$this->validateAmount($this->amount)) {
-            
-        }
-        return $bankAccount->getBalance() + $this->amount;
+        $newBalance = $bankAccount->getBalance() + $this->amount;
+        $bankAccount->setBalance($newBalance);
+
+        return $newBalance;
     }
+
 
     public function getTransactionInfo(): string
     {
         return 'DEPOSIT_TRANSACTION';
     }
 
-    public function getAmount() : float {
+    public function getAmount(): float
+    {
         return $this->amount;
     }
 }

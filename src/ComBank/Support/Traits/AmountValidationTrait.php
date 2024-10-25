@@ -19,12 +19,12 @@ trait AmountValidationTrait
      */
     public function validateAmount(float $amount):void
     {
-        if (!filter_var($amount, FILTER_VALIDATE_FLOAT)) {
-            throw new InvalidArgsException('Error. Insert a valid input.');
+        if (is_nan($amount)) {
+            throw new InvalidArgsException;
         }
 
         if ($amount <= 0) {
-            throw new ZeroAmountException('Error. Insert an amount higher than 0.');
+            throw new ZeroAmountException;
         }
     }
 }
