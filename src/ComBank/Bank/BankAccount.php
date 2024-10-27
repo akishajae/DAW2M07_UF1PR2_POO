@@ -63,7 +63,7 @@ class BankAccount implements BankAccountInterface
             throw new BankAccountException('Bank account is already opened.');
         }
 
-        pl('Bank account is now opened.');
+        echo '<br>Bank account is now opened. <br>';
         $this->status = BankAccountInterface::STATUS_OPEN;
     }
     public function closeAccount(): void
@@ -72,7 +72,7 @@ class BankAccount implements BankAccountInterface
             throw new BankAccountException('Bank account is already closed.');
         }
 
-        pl('Bank account is now closed.');
+        echo '<br>Bank account is now closed. <br>';
         $this->status = BankAccountInterface::STATUS_CLOSED;
     }
 
