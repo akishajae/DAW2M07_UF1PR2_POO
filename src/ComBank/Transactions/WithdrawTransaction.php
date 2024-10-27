@@ -9,9 +9,13 @@ namespace ComBank\Transactions;
  * Time: 1:22 PM
  */
 
-use ComBank\Bank\Contracts\BankAccountInterface;
-use ComBank\Exceptions\InvalidOverdraftFundsException;
-use ComBank\Transactions\Contracts\BankTransactionInterface;
+ use ComBank\Bank\BankAccount;
+ use ComBank\Bank\Contracts\BankAccountInterface;
+ use ComBank\Exceptions\FailedTransactionException;
+ use ComBank\Exceptions\InvalidOverdraftFundsException;
+ use ComBank\OverdraftStrategy\NoOverdraft;
+ use ComBank\OverdraftStrategy\SilverOverdraft;
+ use ComBank\Transactions\Contracts\BankTransactionInterface;
 
 class WithdrawTransaction extends BaseTransaction implements BankTransactionInterface
 {
@@ -19,13 +23,19 @@ class WithdrawTransaction extends BaseTransaction implements BankTransactionInte
     public function applyTransaction(BankAccountInterface $bankAccount): float
     {
 
-        if (!$bankAccount->getOverdraft()->isGrantOverdraftFunds($this->amount)) {
-            throw new InvalidOverdraftFundsException('Your withdraw has reach the max overdraft funds.');
-        } else {
+        if ($bankAccount->getOverdraft()->isGrantOverdraftFunds($bankAccount->getBalance() - $this->amount)) {
+
             $newBalance = $bankAccount->getBalance() - $this->amount;
+            $bankAccount->setBalance($newBalance);
+
+            return $newBalance;
         }
 
-        return $newBalance;
+        if ($bankAccount->getOverdraft()->getOverdraftFundsAmmount() == NoOverdraft::OVERDRAFT_FUNDS_AMOUNT) {
+            throw new InvalidOverdraftFundsException('Insufficient balance to complete the withdrawal.');
+        }
+
+        throw new FailedTransactionException('Withdrawal exceeds overdraft limit.');
     }
 
     public function getTransactionInfo(): string
