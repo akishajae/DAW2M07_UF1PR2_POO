@@ -27,9 +27,11 @@ class BankAccount implements BankAccountInterface
     use AmountValidationTrait;
 
     // Properties
+    private $PersonHolder;
     private $balance;
     private $status;
     private $overdraft;
+    private $currency;
 
     // Constructors
     public function __construct(float $newBalance = 0.0)
