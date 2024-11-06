@@ -27,11 +27,13 @@ class BankAccount implements BankAccountInterface
     use AmountValidationTrait;
 
     // Properties
-    private $balance;
-    private $status;
-    private $overdraft;
+    protected $PersonHolder;
+    protected $balance;
+    protected $status;
+    protected $overdraft;
+    protected $currency;
 
-    // Constructors
+    // Constructor
     public function __construct(float $newBalance = 0.0)
     {
         $this->validateAmount($newBalance);
@@ -92,5 +94,45 @@ class BankAccount implements BankAccountInterface
     public function setBalance(float $newBalance): void
     {
         $this->balance = $newBalance;
+    } 
+
+    /**
+     * Get the value of PersonHolder
+     */ 
+    public function getPersonHolder()
+    {
+        return $this->PersonHolder;
+    }
+
+    /**
+     * Set the value of PersonHolder
+     *
+     * @return  self
+     */ 
+    public function setPersonHolder($PersonHolder)
+    {
+        $this->PersonHolder = $PersonHolder;
+
+        return $this;
+    }
+    
+    /**
+     * Get the value of currency
+     */ 
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Set the value of currency
+     *
+     * @return  self
+     */ 
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
     }
 }
