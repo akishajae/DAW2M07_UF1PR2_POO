@@ -18,6 +18,7 @@ use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\Support\Traits\AmountValidationTrait;
+use ComBank\Support\Traits\ApiTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 
 class BankAccount implements BankAccountInterface
@@ -25,6 +26,7 @@ class BankAccount implements BankAccountInterface
 
     // Trait
     use AmountValidationTrait;
+    use ApiTrait;
 
     // Properties
     protected $PersonHolder;
