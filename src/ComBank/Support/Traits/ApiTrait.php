@@ -10,7 +10,7 @@ use ComBank\Transactions\Contracts\BankTransactionInterface;
 trait ApiTrait
 {
 
-    public function convertBalance(InternationalBankAccount $balance): float
+    public function convertBalance(InternationalBankAccount $account): float
     {
         $url = "https://api.freecurrencyapi.com/v1/latest";
 
@@ -19,14 +19,28 @@ trait ApiTrait
             "apikey: fca_live_oDaP3F3B5bYD7SiQHooud0oXlXg2tYhbHLhPbssH",
         );
 
-        $response = json_decode(curl_exec($curl));
+        $response = json_decode(curl_exec($curl), true);
 
         curl_close($curl);
 
-        return 0.0;
+        // calculation
+
+        $rate = $response["data"]["USD"];
+
+        $convertedBalance = $account->getBalance() * $rate;
+
+        return $convertedBalance;
     }
     public function validateEmail($string): bool
     {
+        $url = "https://api-bdc.net/data/email-verify";
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt_array($curl, array(
+            
+        ));
+
         return false;
     }
 
