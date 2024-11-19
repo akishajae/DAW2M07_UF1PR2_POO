@@ -8,6 +8,7 @@
  */
 
 use ComBank\Bank\BankAccount;
+use ComBank\Bank\Contracts\InternationalBankAccount;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Transactions\DepositTransaction;
 use ComBank\Transactions\WithdrawTransaction;
@@ -130,3 +131,7 @@ try {
 } catch (BankAccountException $e) {
     pl($e->getMessage());
 }
+
+//---[Bank account 3]---/
+pl('--------- [Start testing bank account #3, International bank account] --------');
+$bankAccount3 = new InternationalBankAccount(200.0);

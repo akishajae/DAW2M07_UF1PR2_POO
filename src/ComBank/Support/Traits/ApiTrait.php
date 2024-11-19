@@ -33,14 +33,6 @@ trait ApiTrait
     }
     public function validateEmail($string): bool
     {
-        $url = "https://api-bdc.net/data/email-verify";
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt_array($curl, array(
-            
-        ));
-
         return false;
     }
 
