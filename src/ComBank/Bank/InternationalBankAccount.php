@@ -8,11 +8,11 @@ use ComBank\Bank\BankAccount;
 class InternationalBankAccount extends BankAccount{
 
     public function getConvertedBalance() : float {
-        $this->convertBalance($this);
-        return 0.0;
+        $balance = $this->convertBalance($this);
+        return floatval(number_format($balance, 2, ",", "."));
     }
 
     public function getConvertedCurrency() : string {
-        return "";
+        return "$";
     }
 }
