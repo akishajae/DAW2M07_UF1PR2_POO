@@ -17,7 +17,9 @@ class Person {
     public function __construct(string $name, int $idCard, string $email) {
         $this->name = $name;
         $this->idCard = $idCard;
-        $this->email = $this->validateEmail($email);
+        
+        $this->validateEmail($email);
+        $this->email = $email;
     }
 
     // Getters & setters
