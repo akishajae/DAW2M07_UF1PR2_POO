@@ -33,13 +33,15 @@ trait ApiTrait
     }
     public function validateEmail($string): bool
     {
-        $url = 'https://api-bdc.net/data/email-verify';
+        $url = 'https://api-bdc.net/data/email-verify?emailAddress=' . urlencode($string) . '&key=bdc_2374c399e1c7416693720b149516e622';
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => '?emailAddress='+ $string + '&key=bdc_2374c399e1c7416693720b149516e622',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
             CURLOPT_SSL_VERIFYPEER => false,
         ));
 
