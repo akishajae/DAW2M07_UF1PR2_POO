@@ -29,19 +29,21 @@ class BankAccount implements BankAccountInterface
     use ApiTrait;
 
     // Properties
-    protected $PersonHolder;
+    protected $personHolder;
     protected $balance;
     protected $status;
     protected $overdraft;
     protected $currency;
 
     // Constructor
-    public function __construct(float $newBalance = 0.0)
+    public function __construct(float $newBalance = 0.0, $personHolder = null, $currency = null)
     {
+        $this->personHolder = $personHolder;
         $this->validateAmount($newBalance);
         $this->balance = $newBalance;
         $this->status = BankAccountInterface::STATUS_OPEN;
         $this->overdraft = new NoOverdraft();
+        $this->currency = $currency;
     }
 
     // BankAccountInterface
@@ -103,7 +105,7 @@ class BankAccount implements BankAccountInterface
      */ 
     public function getPersonHolder()
     {
-        return $this->PersonHolder;
+        return $this->personHolder;
     }
 
     /**
@@ -111,9 +113,9 @@ class BankAccount implements BankAccountInterface
      *
      * @return  self
      */ 
-    public function setPersonHolder($PersonHolder)
+    public function setPersonHolder($personHolder)
     {
-        $this->PersonHolder = $PersonHolder;
+        $this->personHolder = $personHolder;
 
         return $this;
     }
