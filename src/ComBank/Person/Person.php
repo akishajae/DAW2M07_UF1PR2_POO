@@ -2,7 +2,11 @@
 
 namespace ComBank\Person;
 
+use ComBank\Support\Traits\ApiTrait;
+
 class Person {
+    // Trait
+    use ApiTrait;
 
     //Properties
     private $name;
@@ -13,7 +17,7 @@ class Person {
     public function __construct(string $name, int $idCard, string $email) {
         $this->name = $name;
         $this->idCard = $idCard;
-        $this->email = $email;
+        $this->email = $this->validateEmail($email);
     }
 
     // Getters & setters
@@ -61,7 +65,7 @@ class Person {
      */ 
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->email = $this->validateEmail($email);
 
         return $this;
     }

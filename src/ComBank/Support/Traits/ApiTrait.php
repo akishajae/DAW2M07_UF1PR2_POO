@@ -33,7 +33,27 @@ trait ApiTrait
     }
     public function validateEmail($string): bool
     {
-        return false;
+        $url = 'https://api-bdc.net/data/email-verify';
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => '?emailAddress='+ $string + '&key=bdc_2374c399e1c7416693720b149516e622',
+            CURLOPT_SSL_VERIFYPEER => false,
+        ));
+
+        $response = json_decode(curl_exec($curl), true);
+
+        $isValid = $response["isValid"];
+        $isSyntaxValid = $response["isSyntaxValid"];
+        $isMailServerDefined = $response["isMailServerDefined"];
+        $isKnownSpammerDomain = $response["isKnownSpammerDomain"];
+        $isDisposable = $response["isDisposable"];
+
+        curl_close($curl);
+
+        return $isValid && $isSyntaxValid && $isMailServerDefined && !$isKnownSpammerDomain && !$isDisposable;
     }
 
     public function detectFraud(BankTransactionInterface $bankTransaction): bool
