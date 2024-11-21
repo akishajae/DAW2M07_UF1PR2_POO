@@ -8,8 +8,8 @@
  */
 
 use ComBank\Bank\BankAccount;
+use ComBank\Bank\InternationalBankAccount;
 use ComBank\Person\Person;
-use ComBank\Bank\Contracts\InternationalBankAccount;
 use ComBank\OverdraftStrategy\SilverOverdraft;
 use ComBank\Transactions\DepositTransaction;
 use ComBank\Transactions\WithdrawTransaction;
@@ -137,8 +137,8 @@ try {
 pl('--------- [Start testing bank account #3, International bank account] --------');
 
 // initialize account
-// $bankAccount3 = new InternationalBankAccount(200.0);
-// echo "Converted balance: " . $bankAccount3->getConvertedBalance();
+$bankAccount3 = new InternationalBankAccount(200.0, null, "$");
+echo "Converted balance: " . $bankAccount3->getConvertedBalance();
 
 $person = new Person("Persona", "1", "pl2023290@gmail.com");
 echo "Email: " . $person->getEmail();

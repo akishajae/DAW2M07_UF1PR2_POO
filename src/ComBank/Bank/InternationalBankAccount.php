@@ -1,6 +1,6 @@
 <?php
 
-namespace ComBank\Bank\Contracts;
+namespace ComBank\Bank;
 
 use ComBank\Bank\BankAccount;
 
