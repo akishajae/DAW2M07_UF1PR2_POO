@@ -158,3 +158,6 @@ $bankAccount3->transaction(new WithdrawTransaction(15000.0));
 
 $person = new Person("Persona", "1", "pl2023290@gmail.com");
 echo "Email: " . $person->getEmail();
+
+echo "<br> Test e-mail: test@no-exists.com<br>";
+$person->setEmail("test@no-exists.com");

@@ -56,7 +56,19 @@ trait ApiTrait
 
         curl_close($curl);
 
-        return $isValid && $isSyntaxValid && $isMailServerDefined && !$isKnownSpammerDomain && !$isDisposable;
+        if (!$isValid) {
+            echo "Email is not valid.";
+        } elseif (!$isSyntaxValid) {
+            echo "Invalid email syntax.";
+        } elseif (!$isMailServerDefined) {
+            echo "Mail server is not defined.";
+        } elseif ($isKnownSpammerDomain) {
+            echo "Known spammer domain.";
+        } elseif ($isDisposable) {
+            echo "Disposable email address.";
+        }
+        
+        return ($isValid && $isSyntaxValid && $isMailServerDefined && !$isKnownSpammerDomain && !$isDisposable);
     }
 
     public function detectFraud(BankTransactionInterface $bankTransaction): bool
