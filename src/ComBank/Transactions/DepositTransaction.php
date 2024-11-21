@@ -16,12 +16,17 @@ class DepositTransaction extends BaseTransaction implements BankTransactionInter
 {
     public function applyTransaction(BankAccountInterface $bankAccount): float
     {
-        $this->detectFraud($this);
+        if ($this->detectFraud($this)) {
+            echo "Transaction is allowed.<br>";
+            $newBalance = $bankAccount->getBalance() + $this->amount;
+            $bankAccount->setBalance($newBalance);
 
-        $newBalance = $bankAccount->getBalance() + $this->amount;
-        $bankAccount->setBalance($newBalance);
+            return $newBalance;
+        } else {
+            echo "Transaction has been blocked.<br>";
+        };
 
-        return $newBalance;
+        return $bankAccount->getBalance();
     }
 
 

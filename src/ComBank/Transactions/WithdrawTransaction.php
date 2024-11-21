@@ -9,33 +9,39 @@ namespace ComBank\Transactions;
  * Time: 1:22 PM
  */
 
- use ComBank\Bank\BankAccount;
- use ComBank\Bank\Contracts\BankAccountInterface;
- use ComBank\Exceptions\FailedTransactionException;
- use ComBank\Exceptions\InvalidOverdraftFundsException;
- use ComBank\OverdraftStrategy\NoOverdraft;
- use ComBank\OverdraftStrategy\SilverOverdraft;
- use ComBank\Transactions\Contracts\BankTransactionInterface;
+use ComBank\Bank\BankAccount;
+use ComBank\Bank\Contracts\BankAccountInterface;
+use ComBank\Exceptions\FailedTransactionException;
+use ComBank\Exceptions\InvalidOverdraftFundsException;
+use ComBank\OverdraftStrategy\NoOverdraft;
+use ComBank\OverdraftStrategy\SilverOverdraft;
+use ComBank\Transactions\Contracts\BankTransactionInterface;
 
 class WithdrawTransaction extends BaseTransaction implements BankTransactionInterface
 {
 
     public function applyTransaction(BankAccountInterface $bankAccount): float
     {
+        if ($this->detectFraud($this)) {
+            if ($bankAccount->getOverdraft()->isGrantOverdraftFunds($bankAccount->getBalance() - $this->amount)) {
+                echo "Transaction is allowed.<br>";
 
-        if ($bankAccount->getOverdraft()->isGrantOverdraftFunds($bankAccount->getBalance() - $this->amount)) {
+                $newBalance = $bankAccount->getBalance() - $this->amount;
+                $bankAccount->setBalance($newBalance);
 
-            $newBalance = $bankAccount->getBalance() - $this->amount;
-            $bankAccount->setBalance($newBalance);
+                return $newBalance;
+            }
 
-            return $newBalance;
+            if ($bankAccount->getOverdraft()->getOverdraftFundsAmmount() == NoOverdraft::OVERDRAFT_FUNDS_AMOUNT) {
+                throw new InvalidOverdraftFundsException('Insufficient balance to complete the withdrawal.');
+            }
+
+            throw new FailedTransactionException('Withdrawal exceeds overdraft limit.');
+        } else {
+            echo "Transaction has been blocked.<br>";
         }
 
-        if ($bankAccount->getOverdraft()->getOverdraftFundsAmmount() == NoOverdraft::OVERDRAFT_FUNDS_AMOUNT) {
-            throw new InvalidOverdraftFundsException('Insufficient balance to complete the withdrawal.');
-        }
-
-        throw new FailedTransactionException('Withdrawal exceeds overdraft limit.');
+        return $bankAccount->getBalance();
     }
 
     public function getTransactionInfo(): string
