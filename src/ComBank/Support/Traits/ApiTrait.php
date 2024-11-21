@@ -10,22 +10,22 @@ use ComBank\Transactions\Contracts\BankTransactionInterface;
 trait ApiTrait
 {
 
-    public function convertBalance(InternationalBankAccount $account): float
+    public function convertBalance(InternationalBankAccount $account)
     {
         $url = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_oDaP3F3B5bYD7SiQHooud0oXlXg2tYhbHLhPbssH&currencies=USD&base_currency=EUR";
 
         $curl = curl_init($url);
-        curl_setopt_array($curl, [
+        curl_setopt_array($curl, array(
             CURLOPT_RETURNTRANSFER => true
-        ]);
+        ));
 
-        $response = curl_exec($curl);
+        $response = json_decode(curl_exec($curl), true);
 
         curl_close($curl);
 
         // calculation
 
-       $rate = json_decode($response, true)["data"]["USD"];
+        $rate = $response["data"]["USD"];
 
         $convertedBalance = $account->getBalance() * $rate;
 
