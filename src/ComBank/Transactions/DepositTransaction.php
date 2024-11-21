@@ -16,6 +16,8 @@ class DepositTransaction extends BaseTransaction implements BankTransactionInter
 {
     public function applyTransaction(BankAccountInterface $bankAccount): float
     {
+        $this->detectFraud($this);
+
         $newBalance = $bankAccount->getBalance() + $this->amount;
         $bankAccount->setBalance($newBalance);
 

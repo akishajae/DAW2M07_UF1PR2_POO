@@ -6,6 +6,7 @@ use ComBank\Bank\InternationalBankAccount;
 use ComBank\Exceptions\InvalidArgsException;
 use ComBank\Exceptions\ZeroAmountException;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
+use ComBank\Transactions\DepositTransaction;
 
 trait ApiTrait
 {
@@ -60,6 +61,39 @@ trait ApiTrait
 
     public function detectFraud(BankTransactionInterface $bankTransaction): bool
     {
+        $url = 'https://673e09cc0118dbfe8609e29c.mockapi.io/detect-fraud/fraud-detection-system';
+        
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => true
+        ));
+
+        $response = json_decode(curl_exec($curl), true);
+
+        curl_close($curl);
+
+        // operation
+
+        foreach ($response as $key) {
+            switch ($key["movement"]) {
+                case "DEPOSIT_TRANSACTION":
+
+                    if ($key["amount"] ) {
+
+                    }
+
+                    break;
+                case "WITHDRAW_TRANSACTION":
+
+
+
+                    break;
+            }
+        }
+
+        var_dump($response);
+        
         return false;
     }
 }
