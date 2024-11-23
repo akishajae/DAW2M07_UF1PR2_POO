@@ -11,7 +11,7 @@ use ComBank\Transactions\DepositTransaction;
 trait ApiTrait
 {
 
-    public function convertBalance(InternationalBankAccount $account)
+    public function convertBalance($currency)
     {
         $url = "https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_oDaP3F3B5bYD7SiQHooud0oXlXg2tYhbHLhPbssH&currencies=USD&base_currency=EUR";
 
@@ -26,11 +26,9 @@ trait ApiTrait
 
         // calculation
 
-        $rate = $response["data"]["USD"];
+        $rate = $response["data"][$currency];
 
-        $convertedBalance = $account->getBalance() * $rate;
-
-        return $convertedBalance;
+        return $rate;
     }
     public function validateEmail($string): bool
     {

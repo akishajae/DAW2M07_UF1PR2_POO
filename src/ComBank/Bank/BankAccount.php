@@ -137,11 +137,14 @@ class BankAccount implements BankAccountInterface
     public function setCurrency($currency)
     {
         switch ($currency) {
+            case "EUR":
+                $this->currency = "€ (EUR)";
+                break;
             case "USD":
                 $this->currency = "$ (USD)";
                 break;
             default:
-                $this->currency = "€ (EUR)";
+                $this->currency = null;
         }
 
         return $this;
