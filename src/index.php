@@ -12,6 +12,7 @@ use ComBank\Bank\NationalBankAccount;
 use ComBank\Bank\InternationalBankAccount;
 use ComBank\Person\Person;
 use ComBank\OverdraftStrategy\SilverOverdraft;
+use ComBank\Support\Traits\ApiTrait;
 use ComBank\Transactions\DepositTransaction;
 use ComBank\Transactions\WithdrawTransaction;
 use ComBank\Exceptions\BankAccountException;
@@ -136,8 +137,16 @@ try {
 
 //---[Bank account 3]---/
 pl('--------- [Start testing national account #3 (No conversion)] --------');
-$bankAccount3 = new NationalBankAccount(500.0);
-pl($bankAccount3->getBalance());
+$bankAccount3 = new NationalBankAccount(500.0, null, "€ (EUR)");
+pl('My balance : ' . $bankAccount3->getBalance() . $bankAccount3->getCurrency());
 
 //---[Bank account 4]---/
 pl('--------- [Start testing international account #4 (Dollar conversion)] --------');
+$bankAccount4 = new InternationalBankAccount(300.0, null, "$ (USD)");
+pl('My balance : ' . $bankAccount3->getBalance() . $bankAccount3->getCurrency());
+
+pl('Converting balance to Dollars (Rate: 1 $ = ' . $bankAccount4->convertBalance("USD") . ' €)');
+pl('Converted balance: ' . $bankAccount4->getConvertedBalance() . $bankAccount4->getConvertedCurrency());
+
+pl('--------- [Start testing valid email] --------');
+pl('--------- [Start testing invalid email] --------');
