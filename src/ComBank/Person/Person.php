@@ -4,7 +4,8 @@ namespace ComBank\Person;
 
 use ComBank\Support\Traits\ApiTrait;
 
-class Person {
+class Person
+{
     // Trait
     use ApiTrait;
 
@@ -15,15 +16,20 @@ class Person {
     private $phoneNum;
 
     // Constructor
-    public function __construct(string $name, int $idCard, string $email, string $phoneNum) {
+    public function __construct(string $name = null, int $idCard = null, string $email = null, string $phoneNum = null)
+    {
         $this->name = $name;
         $this->idCard = $idCard;
-        
-        if ($this->validateEmail($email)) {
-            $this->email = $email;
-        }
 
-        if ($this->validatePhoneNum($phoneNum)) {
+        if (!is_null($email) || !is_null($phoneNum)) {
+            if ($this->validateEmail($email)) {
+                $this->email = $email;
+            }
+            if ($this->validatePhoneNum($phoneNum)) {
+                $this->phoneNum = $phoneNum;
+            }
+        } else {
+            $this->email = $email;
             $this->phoneNum = $phoneNum;
         }
     }
@@ -32,7 +38,7 @@ class Person {
 
     /**
      * Get the value of name
-     */ 
+     */
     public function getName()
     {
         return $this->name;
@@ -42,7 +48,7 @@ class Person {
      * Set the value of name
      *
      * @return  self
-     */ 
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -52,15 +58,15 @@ class Person {
 
     /**
      * Get the value of idCard
-     */ 
+     */
     public function getIdCard()
     {
         return $this->idCard;
     }
-    
+
     /**
      * Get the value of email
-     */ 
+     */
     public function getEmail()
     {
         return $this->email;
@@ -70,7 +76,7 @@ class Person {
      * Set the value of email
      *
      * @return  self
-     */ 
+     */
     public function setEmail($email)
     {
         if ($this->validateEmail($email)) {
@@ -80,11 +86,11 @@ class Person {
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of phoneNum
-     */ 
+     */
     public function getPhoneNum()
     {
         return $this->phoneNum;
@@ -94,7 +100,7 @@ class Person {
      * Set the value of phoneNum
      *
      * @return  self
-     */ 
+     */
     public function setPhoneNum($phoneNum)
     {
         if ($this->validatePhoneNum($phoneNum)) {
