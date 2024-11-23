@@ -99,11 +99,11 @@ class BankAccount implements BankAccountInterface
     public function setBalance(float $newBalance): void
     {
         $this->balance = $newBalance;
-    } 
+    }
 
     /**
      * Get the value of PersonHolder
-     */ 
+     */
     public function getPersonHolder()
     {
         return $this->personHolder;
@@ -113,17 +113,17 @@ class BankAccount implements BankAccountInterface
      * Set the value of PersonHolder
      *
      * @return  self
-     */ 
+     */
     public function setPersonHolder(Person $personHolder)
     {
         $this->personHolder = $personHolder;
 
         return $this;
     }
-    
+
     /**
      * Get the value of currency
-     */ 
+     */
     public function getCurrency()
     {
         return $this->currency;
@@ -133,10 +133,16 @@ class BankAccount implements BankAccountInterface
      * Set the value of currency
      *
      * @return  self
-     */ 
+     */
     public function setCurrency($currency)
     {
-        $this->currency = $currency;
+        switch ($currency) {
+            case "USD":
+                $this->currency = "$ (USD)";
+                break;
+            default:
+                $this->currency = "€ (EUR)";
+        }
 
         return $this;
     }

@@ -8,6 +8,7 @@
  */
 
 use ComBank\Bank\BankAccount;
+use ComBank\Bank\NationalBankAccount;
 use ComBank\Bank\InternationalBankAccount;
 use ComBank\Person\Person;
 use ComBank\OverdraftStrategy\SilverOverdraft;
@@ -134,57 +135,9 @@ try {
 }
 
 //---[Bank account 3]---/
-pl('--------- [Start testing bank account #3, International bank account] --------');
-
-// initialize account
-$bankAccount3 = new InternationalBankAccount(100000.0, null, "$");
-pl($bankAccount3->getBalance());
-echo "Converted balance: " . $bankAccount3->getConvertedBalance();
-
-$bankAccount3->transaction(new DepositTransaction(5000.0));
-pl($bankAccount3->getBalance());
-$bankAccount3->transaction(new DepositTransaction(2000.0));
-$bankAccount3->transaction(new DepositTransaction(10000.0));
-$bankAccount3->transaction(new DepositTransaction(22000.0));
-pl($bankAccount3->getBalance());
-$bankAccount3->transaction(new DepositTransaction(50000.0));
+pl('--------- [Start testing national account #3 (No conversion)] --------');
+$bankAccount3 = new NationalBankAccount(500.0);
 pl($bankAccount3->getBalance());
 
-echo "<br>withdraw<br>";
-
-$bankAccount3->transaction(new WithdrawTransaction(1000.0));
-pl($bankAccount3->getBalance());
-$bankAccount3->transaction(new WithdrawTransaction(100.0));
-$bankAccount3->transaction(new WithdrawTransaction(2500.0));
-
-echo "<br>should be blocked<br>";
-
-$bankAccount3->transaction(new WithdrawTransaction(3000.0));
-pl($bankAccount3->getBalance());
-$bankAccount3->transaction(new WithdrawTransaction(5000.0));
-pl($bankAccount3->getBalance());
-$bankAccount3->transaction(new WithdrawTransaction(15000.0));
-
-
-$person = new Person("Persona", "1", "pl2023290@gmail.com", "+34602416942");
-echo "Email: " . $person->getEmail();
-
-echo "<br> Test e-mail: test@no-exists.com<br>";
-$person->setEmail("test@no-exists.com");
-pl($person->getEmail());
-$person->setEmail("aaaa@.com");
-pl($person->getEmail());
-
-pl($person->getPhoneNum());
-$person->setPhoneNum("aaaa@.com");
-pl($person->getPhoneNum());
-$person->setPhoneNum("+34 602 416 942");
-pl($person->getPhoneNum());
-$person->setPhoneNum("+34 602416942");
-pl($person->getPhoneNum());
-$person->setPhoneNum("+44 791 112 4456");
-pl($person->getPhoneNum());
-
-$bankAccount3->setPersonHolder($person);
-$bankAccount3->setCurrency("$");
-pl($bankAccount3->getConvertedBalance() . $bankAccount3->getConvertedCurrency());
+//---[Bank account 4]---/
+pl('--------- [Start testing international account #4 (Dollar conversion)] --------');
