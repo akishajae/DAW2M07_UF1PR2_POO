@@ -13,13 +13,20 @@ class Person {
     private $idCard;
     private $email;
 
+    private $phoneNum;
+
     // Constructor
-    public function __construct(string $name, int $idCard, string $email) {
+    public function __construct(string $name, int $idCard, string $email, string $phoneNum) {
         $this->name = $name;
         $this->idCard = $idCard;
         
-        $this->validateEmail($email);
-        $this->email = $email;
+        if ($this->validateEmail($email)) {
+            $this->email = $email;
+        }
+
+        if ($this->validatePhoneNum($phoneNum)) {
+            $this->phoneNum = $phoneNum;
+        }
     }
 
     // Getters & setters
@@ -67,7 +74,33 @@ class Person {
      */ 
     public function setEmail($email)
     {
-        $this->email = $this->validateEmail($email);
+        if ($this->validateEmail($email)) {
+            $this->email = $email;
+        }
+
+        return $this;
+    }
+
+    
+
+    /**
+     * Get the value of phoneNum
+     */ 
+    public function getPhoneNum()
+    {
+        return $this->phoneNum;
+    }
+
+    /**
+     * Set the value of phoneNum
+     *
+     * @return  self
+     */ 
+    public function setPhoneNum($phoneNum)
+    {
+        if ($this->validatePhoneNum($phoneNum)) {
+            $this->phoneNum = $phoneNum;
+        }
 
         return $this;
     }

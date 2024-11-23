@@ -50,7 +50,7 @@ trait ApiTrait
 
         $isValid = $response["isValid"];
         $isSyntaxValid = $response["isSyntaxValid"];
-        $isMailServerDefined = $response["isMailServerDefined"];
+        // $isMailServerDefined = $response["isMailServerDefined"];
         $isKnownSpammerDomain = $response["isKnownSpammerDomain"];
         $isDisposable = $response["isDisposable"];
 
@@ -60,15 +60,17 @@ trait ApiTrait
             echo "Email is not valid.";
         } elseif (!$isSyntaxValid) {
             echo "Invalid email syntax.";
-        } elseif (!$isMailServerDefined) {
-            echo "Mail server is not defined.";
-        } elseif ($isKnownSpammerDomain) {
+        }
+        // elseif (!$isMailServerDefined) {
+        //     echo "Mail server is not defined.";
+        // } 
+        elseif ($isKnownSpammerDomain) {
             echo "Known spammer domain.";
         } elseif ($isDisposable) {
             echo "Disposable email address.";
         }
 
-        return ($isValid && $isSyntaxValid && $isMailServerDefined && !$isKnownSpammerDomain && !$isDisposable);
+        return $isValid && $isSyntaxValid && !$isKnownSpammerDomain && !$isDisposable;
     }
 
     public function detectFraud(BankTransactionInterface $bankTransaction): bool
@@ -146,5 +148,33 @@ trait ApiTrait
         }
 
         return false;
+    }
+
+    public function validatePhoneNum($string): bool
+    {
+
+        $url = 'https://api-bdc.net/data/phone-number-validate?number=' . urlencode($string) . '&countryCode=esp&localityLanguage=es&key=bdc_2374c399e1c7416693720b149516e622';
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+            CURLOPT_SSL_VERIFYPEER => false,
+        ));
+
+        $response = json_decode(curl_exec($curl), true);
+
+        $isValid = $response["isValid"];
+
+        curl_close($curl);
+
+        if (!$isValid) {
+            echo "Phone number is not valid.";
+        }
+
+        return $isValid;
     }
 }

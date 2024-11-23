@@ -166,8 +166,21 @@ pl($bankAccount3->getBalance());
 $bankAccount3->transaction(new WithdrawTransaction(15000.0));
 
 
-$person = new Person("Persona", "1", "pl2023290@gmail.com");
+$person = new Person("Persona", "1", "pl2023290@gmail.com", "+34602416942");
 echo "Email: " . $person->getEmail();
 
 echo "<br> Test e-mail: test@no-exists.com<br>";
 $person->setEmail("test@no-exists.com");
+pl($person->getEmail());
+$person->setEmail("aaaa@.com");
+pl($person->getEmail());
+
+pl($person->getPhoneNum());
+$person->setPhoneNum("aaaa@.com");
+pl($person->getPhoneNum());
+$person->setPhoneNum("+34 602 416 942");
+pl($person->getPhoneNum());
+$person->setPhoneNum("+34 602416942");
+pl($person->getPhoneNum());
+$person->setPhoneNum("+44 791 112 4456");
+pl($person->getPhoneNum());
