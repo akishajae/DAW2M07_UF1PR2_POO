@@ -19,6 +19,8 @@ use ComBank\Exceptions\BankAccountException;
 use ComBank\Exceptions\FailedTransactionException;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\Exceptions\ZeroAmountException;
+use ComBank\Exceptions\InvalidEmailException;
+use ComBank\Exceptions\InvalidPhoneNumException;
 
 require_once 'bootstrap.php';
 
@@ -143,10 +145,44 @@ pl('My balance : ' . $bankAccount3->getBalance() . $bankAccount3->getCurrency())
 //---[Bank account 4]---/
 pl('--------- [Start testing international account #4 (Dollar conversion)] --------');
 $bankAccount4 = new InternationalBankAccount(300.0, null, "$ (USD)");
-pl('My balance : ' . $bankAccount3->getBalance() . $bankAccount3->getCurrency());
+pl('My balance : ' . $bankAccount4->getBalance() . $bankAccount3->getCurrency());
 
 pl('Converting balance to Dollars (Rate: 1 $ = ' . $bankAccount4->convertBalance("USD") . ' €)');
 pl('Converted balance: ' . $bankAccount4->getConvertedBalance() . $bankAccount4->getConvertedCurrency());
 
 pl('--------- [Start testing valid email] --------');
+$person = new Person();
+
+pl('Validating email: pl2023290@365.stucom.com');
+try {
+    $person->setEmail("pl2023290@365.stucom.com");
+} catch (InvalidEmailException $e) {
+    pl('Error: ' . $e->getMessage());
+}
+
 pl('--------- [Start testing invalid email] --------');
+
+pl('Validating email: pl2023290@invalid-email');
+try {
+    $person->setEmail("pl2023290@invalid-email");
+} catch (InvalidEmailException $e) {
+    pl('Error: ' . $e->getMessage());
+}
+
+pl('--------- [Start testing valid phone number] --------');
+
+pl('Validating phone number: +44 791 112 4456');
+try {
+    $person->setPhoneNum("+44 791 112 4456");
+} catch (InvalidPhoneNumException $e) {
+    pl('Error: ' . $e->getMessage());
+}
+
+pl('--------- [Start testing invalid phone number] --------');
+
+pl('Validating phone number: 12345');
+try {
+    $person->setPhoneNum("12345");
+} catch (InvalidPhoneNumException $e) {
+    pl('Error: ' . $e->getMessage());
+}
