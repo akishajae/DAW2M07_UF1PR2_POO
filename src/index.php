@@ -186,3 +186,15 @@ try {
 } catch (InvalidPhoneNumException $e) {
     pl('Error: ' . $e->getMessage());
 }
+
+$bankAccount5 = new BankAccount(100000);
+pl('Doing transaction withdrawal (-1000 with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(1000.0));
+pl('Doing transaction withdrawal (-2500 with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(2500.0));
+pl('Doing transaction withdrawal (-5000 with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(5000.0));
+pl('Doing transaction withdrawal (-10000 with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(10000.0));
+pl('Doing transaction withdrawal (-20000 with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(20000.0));

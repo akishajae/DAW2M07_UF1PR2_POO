@@ -99,49 +99,35 @@ trait ApiTrait
                 switch ($value["movement"]) {
                     case "DEPOSIT_TRANSACTION":
 
-                        if ($amountTransaction < ($response[2]["amount"])) {
+                        $depositRisk = $this->calculateRisk($amountTransaction, [
+                            [$response[0]["amount"], $response[0]["risk"]],
+                            [$response[1]["amount"], $response[1]["risk"]],
+                            [$response[2]["amount"], $response[2]["risk"]],
+                            [$response[3]["amount"], $response[3]["risk"]],
+                        ]);
 
-                            if ($amountTransaction < $response[0]["amount"]) {
-                                echo "<br>Risk score: 0<br>";
-                            } elseif ($amountTransaction < $response[1]["amount"] && $amountTransaction >= $response[0]["amount"]) {
-                                echo "<br>Risk score: " . $response[0]["risk"] . "<br>";
-                            } elseif ($amountTransaction < $response[2]["amount"] && $amountTransaction >= $response[1]["amount"]) {
-                                echo "<br>Risk score: " . $response[1]["risk"] . "<br>";
-                            }
-
+                        if ($depositRisk < $response[2]["risk"]) {
+                            echo "Risk score: $depositRisk. <br>";
                             return true;
-                        } elseif ($amountTransaction >= ($response[2]["amount"])) {
-
-                            if ($amountTransaction >= $response[2]["amount"] && $amountTransaction < $response[3]["amount"]) {
-                                echo "<br>Risk score: " . $response[2]["risk"] . "<br>";
-                            } elseif ($amountTransaction >= $response[3]["amount"]) {
-                                echo "<br>Risk score: " . $response[3]["risk"] . "<br>";
-                            }
-
+                        } else {
+                            echo "Risk score: $depositRisk. <br>";
                             return false;
                         }
 
                     case "WITHDRAW_TRANSACTION":
 
-                        if ($amountTransaction < ($response[6]["amount"])) {
+                        $withdrawRisk = $this->calculateRisk($amountTransaction, [
+                            [$response[4]["amount"], $response[4]["risk"]],
+                            [$response[5]["amount"], $response[5]["risk"]],
+                            [$response[6]["amount"], $response[6]["risk"]],
+                            [$response[7]["amount"], $response[7]["risk"]],
+                        ]);
 
-                            if ($amountTransaction < $response[4]["amount"]) {
-                                echo "<br>Risk score: 0<br>";
-                            } elseif ($amountTransaction < $response[5]["amount"] && $amountTransaction >= $response[4]["amount"]) {
-                                echo "<br>Risk score: " . $response[4]["risk"] . "<br>";
-                            } elseif ($amountTransaction < $response[6]["amount"] && $amountTransaction >= $response[5]["amount"]) {
-                                echo "<br>Risk score: " . $response[5]["risk"] . "<br>";
-                            }
-
+                        if ($withdrawRisk < $response[6]["risk"]) {
+                            echo "Risk score: $withdrawRisk. <br>";
                             return true;
-                        } elseif ($amountTransaction >= ($response[6]["amount"])) {
-
-                            if ($amountTransaction >= $response[6]["amount"] && $amountTransaction < $response[7]["amount"]) {
-                                echo "<br>Risk score: " . $response[6]["risk"] . "<br>";
-                            } elseif ($amountTransaction >= $response[7]["amount"]) {
-                                echo "<br>Risk score: " . $response[7]["risk"] . "<br>";
-                            }
-
+                        } else {
+                            echo "Risk score: $withdrawRisk. <br>";
                             return false;
                         }
                 }
@@ -149,6 +135,39 @@ trait ApiTrait
         }
 
         return false;
+    }
+
+    private function calculateRisk($amountTransaction, $range)
+    {
+        // amount < 1st range (25/5000) --> risk is calculated based on the 1st range
+        if ($amountTransaction < $range[0][0]) {
+            $amount1 = 0;
+            $risk1 = 0;
+            $amount2 = $range[0][0];
+            $risk2 = $range[0][1];
+
+            return $risk1 + (($amountTransaction - $amount1) / ($amount2 - $amount1) * ($risk2 - $risk1));
+        }
+
+        // amount > 4th range (100/50000) --> risk: 100
+        if ($amountTransaction >= $range[count($range) - 1][0]) {
+            return $range[count($range) - 1][1];
+        }
+
+        // lineal interpolation between ranges
+        for ($i = 0; $i < count($range) - 1; $i++) {
+            $amount1 = $range[$i][0];
+            $risk1 = $range[$i][1];
+            $amount2 = $range[$i + 1][0];
+            $risk2 = $range[$i + 1][1];
+
+            // in range --> interpolation is applied
+            if ($amount1 <= $amountTransaction && $amountTransaction <= $amount2) {
+                return $risk1 + (($amountTransaction - $amount1) / ($amount2 - $amount1)) * ($risk2 - $risk1);
+            }
+        }
+
+        return 0;
     }
 
     public function validatePhoneNum($string): bool
@@ -172,8 +191,7 @@ trait ApiTrait
 
         curl_close($curl);
 
-        if (!$isValid) 
-        {
+        if (!$isValid) {
             throw new InvalidPhoneNumException('Invalid phone number: ' . $string);
         }
 
