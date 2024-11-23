@@ -5,6 +5,9 @@ namespace ComBank\Support\Traits;
 use ComBank\Bank\InternationalBankAccount;
 use ComBank\Exceptions\InvalidArgsException;
 use ComBank\Exceptions\ZeroAmountException;
+use ComBank\Exceptions\InvalidEmailException;
+use ComBank\Exceptions\InvalidPhoneNumException;
+
 use ComBank\Transactions\Contracts\BankTransactionInterface;
 use ComBank\Transactions\DepositTransaction;
 
@@ -55,17 +58,17 @@ trait ApiTrait
         curl_close($curl);
 
         if (!$isValid) {
-            echo "Email is not valid.";
+            throw new InvalidEmailException('Invalid email address: ' . $string);
         } elseif (!$isSyntaxValid) {
-            echo "Invalid email syntax.";
+            throw new InvalidEmailException('Invalid email syntax.');
         }
         // elseif (!$isMailServerDefined) {
         //     echo "Mail server is not defined.";
         // } 
         elseif ($isKnownSpammerDomain) {
-            echo "Known spammer domain.";
+            throw new InvalidEmailException('Known spammer domain.');
         } elseif ($isDisposable) {
-            echo "Disposable email address.";
+            throw new InvalidEmailException('Disposable email address.');
         }
 
         return $isValid && $isSyntaxValid && !$isKnownSpammerDomain && !$isDisposable;
@@ -169,8 +172,9 @@ trait ApiTrait
 
         curl_close($curl);
 
-        if (!$isValid) {
-            echo "Phone number is not valid.";
+        if (!$isValid) 
+        {
+            throw new InvalidEmailException('Invalid phone number: ' . $string);
         }
 
         return $isValid;
