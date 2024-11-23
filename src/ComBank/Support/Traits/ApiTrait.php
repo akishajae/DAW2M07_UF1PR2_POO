@@ -67,7 +67,7 @@ trait ApiTrait
         } elseif ($isDisposable) {
             echo "Disposable email address.";
         }
-        
+
         return ($isValid && $isSyntaxValid && $isMailServerDefined && !$isKnownSpammerDomain && !$isDisposable);
     }
 
@@ -93,23 +93,25 @@ trait ApiTrait
 
                 $amountTransaction = $bankTransaction->getAmount();
 
-                switch ($value["movement"]) {                    
+                switch ($value["movement"]) {
                     case "DEPOSIT_TRANSACTION":
 
-                        if ($amountTransaction <= ($response[1]["amount"])) {
+                        if ($amountTransaction < ($response[2]["amount"])) {
 
-                            if ($amountTransaction <= $response[0]["amount"]) {
+                            if ($amountTransaction < $response[0]["amount"]) {
+                                echo "<br>Risk score: 0<br>";
+                            } elseif ($amountTransaction < $response[1]["amount"] && $amountTransaction >= $response[0]["amount"]) {
                                 echo "<br>Risk score: " . $response[0]["risk"] . "<br>";
-                            } elseif ($amountTransaction <= $response[1]["amount"] && $amountTransaction > $response[0]["amount"]) {
+                            } elseif ($amountTransaction < $response[2]["amount"] && $amountTransaction >= $response[1]["amount"]) {
                                 echo "<br>Risk score: " . $response[1]["risk"] . "<br>";
                             }
 
                             return true;
                         } elseif ($amountTransaction >= ($response[2]["amount"])) {
 
-                            if ($amountTransaction <= $response[2]["amount"] && $amountTransaction > $response[1]["amount"]) {
+                            if ($amountTransaction >= $response[2]["amount"] && $amountTransaction < $response[3]["amount"]) {
                                 echo "<br>Risk score: " . $response[2]["risk"] . "<br>";
-                            } elseif ($amountTransaction <= $response[3]["amount"] && $amountTransaction > $response[2]["amount"]) {
+                            } elseif ($amountTransaction >= $response[3]["amount"]) {
                                 echo "<br>Risk score: " . $response[3]["risk"] . "<br>";
                             }
 
@@ -118,20 +120,22 @@ trait ApiTrait
 
                     case "WITHDRAW_TRANSACTION":
 
-                        if ($amountTransaction <= ($response[5]["amount"])) {
+                        if ($amountTransaction < ($response[6]["amount"])) {
 
-                            if ($amountTransaction <= $response[4]["amount"]) {
+                            if ($amountTransaction < $response[4]["amount"]) {
+                                echo "<br>Risk score: 0<br>";
+                            } elseif ($amountTransaction < $response[5]["amount"] && $amountTransaction >= $response[4]["amount"]) {
                                 echo "<br>Risk score: " . $response[4]["risk"] . "<br>";
-                            } elseif ($amountTransaction <= $response[5]["amount"] && $amountTransaction > $response[4]["amount"]) {
+                            } elseif ($amountTransaction < $response[6]["amount"] && $amountTransaction >= $response[5]["amount"]) {
                                 echo "<br>Risk score: " . $response[5]["risk"] . "<br>";
                             }
 
                             return true;
                         } elseif ($amountTransaction >= ($response[6]["amount"])) {
 
-                            if ($amountTransaction <= $response[6]["amount"] && $amountTransaction > $response[5]["amount"]) {
+                            if ($amountTransaction >= $response[6]["amount"] && $amountTransaction < $response[7]["amount"]) {
                                 echo "<br>Risk score: " . $response[6]["risk"] . "<br>";
-                            } elseif ($amountTransaction <= $response[7]["amount"] && $amountTransaction > $response[6]["amount"]) {
+                            } elseif ($amountTransaction >= $response[7]["amount"]) {
                                 echo "<br>Risk score: " . $response[7]["risk"] . "<br>";
                             }
 

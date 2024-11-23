@@ -138,6 +138,7 @@ pl('--------- [Start testing bank account #3, International bank account] ------
 
 // initialize account
 $bankAccount3 = new InternationalBankAccount(100000.0, null, "$");
+pl($bankAccount3->getBalance());
 echo "Converted balance: " . $bankAccount3->getConvertedBalance();
 
 $bankAccount3->transaction(new DepositTransaction(5000.0));
@@ -145,14 +146,23 @@ pl($bankAccount3->getBalance());
 $bankAccount3->transaction(new DepositTransaction(2000.0));
 $bankAccount3->transaction(new DepositTransaction(10000.0));
 $bankAccount3->transaction(new DepositTransaction(22000.0));
-$bankAccount3->getBalance();
+pl($bankAccount3->getBalance());
 $bankAccount3->transaction(new DepositTransaction(50000.0));
+pl($bankAccount3->getBalance());
+
+echo "<br>withdraw<br>";
 
 $bankAccount3->transaction(new WithdrawTransaction(1000.0));
+pl($bankAccount3->getBalance());
 $bankAccount3->transaction(new WithdrawTransaction(100.0));
 $bankAccount3->transaction(new WithdrawTransaction(2500.0));
+
+echo "<br>should be blocked<br>";
+
 $bankAccount3->transaction(new WithdrawTransaction(3000.0));
+pl($bankAccount3->getBalance());
 $bankAccount3->transaction(new WithdrawTransaction(5000.0));
+pl($bankAccount3->getBalance());
 $bankAccount3->transaction(new WithdrawTransaction(15000.0));
 
 
