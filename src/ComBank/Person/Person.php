@@ -12,7 +12,6 @@ class Person {
     private $name;
     private $idCard;
     private $email;
-
     private $phoneNum;
 
     // Constructor

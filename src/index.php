@@ -184,3 +184,7 @@ $person->setPhoneNum("+34 602416942");
 pl($person->getPhoneNum());
 $person->setPhoneNum("+44 791 112 4456");
 pl($person->getPhoneNum());
+
+$bankAccount3->setPersonHolder($person);
+$bankAccount3->setCurrency("$");
+pl($bankAccount3->getConvertedBalance() . $bankAccount3->getConvertedCurrency());

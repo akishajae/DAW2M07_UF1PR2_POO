@@ -20,6 +20,7 @@ use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 use ComBank\Support\Traits\AmountValidationTrait;
 use ComBank\Support\Traits\ApiTrait;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
+use ComBank\Person\Person;
 
 class BankAccount implements BankAccountInterface
 {
@@ -36,7 +37,7 @@ class BankAccount implements BankAccountInterface
     protected $currency;
 
     // Constructor
-    public function __construct(float $newBalance = 0.0, $personHolder = null, $currency = null)
+    public function __construct(float $newBalance = 0.0, Person $personHolder = null, $currency = null)
     {
         $this->personHolder = $personHolder;
         $this->validateAmount($newBalance);
@@ -113,7 +114,7 @@ class BankAccount implements BankAccountInterface
      *
      * @return  self
      */ 
-    public function setPersonHolder($personHolder)
+    public function setPersonHolder(Person $personHolder)
     {
         $this->personHolder = $personHolder;
 
