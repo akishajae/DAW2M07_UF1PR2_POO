@@ -146,27 +146,5 @@ trait ApiTrait
         }
 
         return false;
-
-        /*
-        A possible more efficient option:
-
-        function getRiskScore($amount, $response) {
-            for ($i = 0; $i < count($response) - 1; $i++) {
-                if ($amount <= $response[$i + 1]["amount"] && $amount > $response[$i]["amount"]) {
-                    return $response[$i + 1]["risk"];
-                }
-            }
-            return null;  // If no risk score is found
-        }
-
-        $amount = $bankTransaction->getAmount();
-        $riskScore = getRiskScore($amount, $response);
-        if ($riskScore !== null) {
-            echo "<br>Risk score: $riskScore<br>";
-        } else {
-            echo "<br>No risk score found.<br>";
-        }
-        
-        */
     }
 }
