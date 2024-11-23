@@ -174,7 +174,7 @@ trait ApiTrait
 
         if (!$isValid) 
         {
-            throw new InvalidEmailException('Invalid phone number: ' . $string);
+            throw new InvalidPhoneNumException('Invalid phone number: ' . $string);
         }
 
         return $isValid;
