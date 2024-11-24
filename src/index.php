@@ -96,14 +96,14 @@ try {
     pl('My new balance after deposit (+100) : ' . $bankAccount2->getBalance());
 
     // withdrawal -300
-    pl('Doing transaction deposit (-300) with current balance ' . $bankAccount2->getBalance());
+    pl('Doing transaction withdrawal (-300) with current balance ' . $bankAccount2->getBalance());
 
     $bankAccount2->transaction(new WithdrawTransaction(300.0));
 
     pl('My new balance after withdrawal (-300) : ' . $bankAccount2->getBalance());
 
     // withdrawal -50
-    pl('Doing transaction deposit (-50) with current balance ' . $bankAccount2->getBalance());
+    pl('Doing transaction withdrawal (-50) with current balance ' . $bankAccount2->getBalance());
 
     $bankAccount2->transaction(new WithdrawTransaction(50.0));
 
@@ -138,12 +138,12 @@ try {
 }
 
 //---[Bank account 3]---/
-pl('--------- [Start testing national account #3 (No conversion)] --------');
+pl('--------- [Start testing national account #3, No conversion] --------');
 $bankAccount3 = new NationalBankAccount(500.0, null, "€ (EUR)");
 pl('My balance : ' . $bankAccount3->getBalance() . $bankAccount3->getCurrency());
 
 //---[Bank account 4]---/
-pl('--------- [Start testing international account #4 (Dollar conversion)] --------');
+pl('--------- [Start testing international account #4, Dollar conversion] --------');
 $bankAccount4 = new InternationalBankAccount(300.0, null, "$ (USD)");
 pl('My balance : ' . $bankAccount4->getBalance() . $bankAccount3->getCurrency());
 
@@ -169,6 +169,35 @@ try {
     pl('Error: ' . $e->getMessage());
 }
 
+pl('--------- [Start testing bank account #5, Fraud detection feature] --------');
+$bankAccount5 = new BankAccount(50000);
+
+// withdraw
+pl('Doing transaction withdrawal (-400) with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(400.0));
+pl('My new balance after withdrawal (-400) : ' . $bankAccount5->getBalance());
+
+pl('Doing transaction withdrawal (-1000) with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(1000.0));
+pl('My new balance after withdrawal (-1000) : ' . $bankAccount5->getBalance());
+
+pl('Doing transaction withdrawal (-20000) with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new WithdrawTransaction(20000.0));
+pl('My new balance after withdrawal (-20000) : ' . $bankAccount5->getBalance());
+
+// deposit
+pl('Doing transaction deposit (+10000) with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new DepositTransaction(10000.0));
+pl('My new balance after deposit (+10000) : ' . $bankAccount5->getBalance());
+
+pl('Doing transaction deposit (+20000) with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new DepositTransaction(20000.0));
+pl('My new balance after deposit (+20000) : ' . $bankAccount5->getBalance());
+
+pl('Doing transaction deposit (+50000) with current balance ' . $bankAccount5->getBalance());
+$bankAccount5->transaction(new DepositTransaction(50000.0));
+pl('My new balance after deposit (+50000) : ' . $bankAccount5->getBalance());
+
 pl('--------- [Start testing valid phone number] --------');
 
 pl('Validating phone number: +44 791 112 4456');
@@ -186,15 +215,3 @@ try {
 } catch (InvalidPhoneNumException $e) {
     pl('Error: ' . $e->getMessage());
 }
-
-$bankAccount5 = new BankAccount(100000);
-pl('Doing transaction withdrawal (-1000 with current balance ' . $bankAccount5->getBalance());
-$bankAccount5->transaction(new WithdrawTransaction(1000.0));
-pl('Doing transaction withdrawal (-2500 with current balance ' . $bankAccount5->getBalance());
-$bankAccount5->transaction(new WithdrawTransaction(2500.0));
-pl('Doing transaction withdrawal (-5000 with current balance ' . $bankAccount5->getBalance());
-$bankAccount5->transaction(new WithdrawTransaction(5000.0));
-pl('Doing transaction withdrawal (-10000 with current balance ' . $bankAccount5->getBalance());
-$bankAccount5->transaction(new WithdrawTransaction(10000.0));
-pl('Doing transaction withdrawal (-20000 with current balance ' . $bankAccount5->getBalance());
-$bankAccount5->transaction(new WithdrawTransaction(20000.0));
